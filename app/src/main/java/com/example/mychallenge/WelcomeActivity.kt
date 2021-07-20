@@ -10,8 +10,12 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
-        btnMulai.setOnClickListener{
+        btnToLogin.setOnClickListener{
             startActivity(Intent(this, LoginActivity::class.java))
+        }
+
+        btnToSignUp.setOnClickListener{
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
     }
 }
