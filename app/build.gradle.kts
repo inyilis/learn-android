@@ -45,6 +45,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation(AppDependencies.junit)
     androidTestImplementation(AppDependencies.testExt)
     androidTestImplementation(AppDependencies.testEspresso)
