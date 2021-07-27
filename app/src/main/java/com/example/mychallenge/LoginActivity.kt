@@ -22,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
                 it.putExtra(TAG_NAME, inputEmailLogin.text.toString())
                     startActivity(it)
                 }
+                finish()
             }
         }
     }
