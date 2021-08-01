@@ -1,33 +1,35 @@
 package com.example.mychallenge.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mychallenge.R
+import com.example.mychallenge.adapter.PocketAdapter
+import com.example.mychallenge.auth.LoginActivity
+import com.example.mychallenge.data.model.Pockets
+import com.example.mychallenge.data.repository.PocketRepositoryImpl
+import com.example.mychallenge.databinding.FragmentHomeBinding
+import com.example.mychallenge.util.EventResult
+import kotlinx.android.synthetic.main.dialog_create_pocket.view.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class HomeFragment : Fragment(), PocketAdapter.OnClickItem {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var pocketAdapter: PocketAdapter
+    private lateinit var pocketRepository: PocketRepositoryImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -35,26 +37,96 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        pocketRepository = PocketRepositoryImpl()
+        pocketAdapter = PocketAdapter(this)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setRepository(pocketRepository)
+        viewModel.start()
+
+        subscriber()
+        binding.apply {
+            recycleViewPockets.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = pocketAdapter
+            }
+
+            btnCreatePocket.setOnClickListener {
+                createPocket()
+            }
+
+        }
+    }
+
+    private fun subscriber() {
+        binding.apply {
+            val pocketObserve: Observer<EventResult> = Observer<EventResult> {
+                when (it) {
+                    is EventResult.Loading -> showProgressBar()
+                    is EventResult.Success -> {
+                        hideProgressBar()
+                        pocketAdapter.updateData(it.data as List<Pockets>)
+                        tv_total_pocket.text = "Your total pocket is ${viewModel.listPockets.size}"
+                    }
+                    is EventResult.Failed -> {
+                        hideProgressBar()
+                        Log.d("TAG", "Failed: ${it.errorMessage}")
+                    }
+                }
+            }
+
+            viewModel.pocketLiveData.observe(viewLifecycleOwner, pocketObserve)
+        }
+    }
+
+    fun createPocket() {
+        val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_create_pocket, null)
+        val mBuilder = AlertDialog.Builder(activity).setView(mDialogView).setTitle("Create New Pocket")
+        val mShowDialog = mBuilder.show()
+
+        mDialogView.btn_create_pocktet.setOnClickListener {
+            if (mDialogView.input_pocket_name.text.isNullOrEmpty()) {
+                Toast.makeText(context, "Input your pocket name", Toast.LENGTH_SHORT).show()
+            } else {
+                mShowDialog.dismiss()
+                val name = mDialogView.input_pocket_name.text.toString()
+                viewModel.addPocket(Pockets(name, 0, 0))
+            }
+        }
+
+        mDialogView.btn_cancel.setOnClickListener {
+            mShowDialog.dismiss()
+        }
+    }
+
+    fun hideProgressBar() {
+        binding.homeProgressBar.visibility = View.GONE
+        Log.d(LoginActivity.TAG, "hideProgressBar")
+    }
+
+    fun showProgressBar() {
+        binding.homeProgressBar.visibility = View.VISIBLE
+        Log.d(LoginActivity.TAG, "showProgressBar")
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = HomeFragment()
+    }
+
+    override fun Onclick(position: Int) {
+        Toast.makeText(context, "Click: ${viewModel.listPockets[position].name}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun DeletePocket(position: Int) {
+        Toast.makeText(context, "Deleted pocket ${viewModel.listPockets[position].name} success", Toast.LENGTH_SHORT).show()
+        viewModel.delPocket(position)
     }
 }

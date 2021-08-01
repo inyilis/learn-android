@@ -7,100 +7,118 @@
     android:layout_height="match_parent"
     tools:context=".fragment.HomeFragment">
 
+    <ProgressBar
+        android:id="@+id/homeProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvYourGoldAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Pure Gold"
+        android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-black"
-        android:textSize="18sp"
+        android:text="Your Gold Amount"
         android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvGoldAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Your Gold Quantity"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Rp 100.000.000"
         android:fontFamily="sans-serif-medium"
-        android:textSize="24sp"
+        android:text="Rp 100.000.000"
         android:textColor="@color/gold"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/tvYourGoldAmount" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="100 gram"
         android:fontFamily="sans-serif-medium"
-        android:textSize="24sp"
+        android:text="100 gram"
         android:textColor="@color/gold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvGoldAmount"
+        app:layout_constraintStart_toStartOf="@+id/tvGoldAmount"
+        app:layout_constraintTop_toBottomOf="@+id/tvGoldAmount" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tv_total_pocket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Your total pocket is 2"
+        android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-medium"
-        android:textSize="12sp"
+        android:text="Your total pocket is 2"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAmount" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btnCreatePocket"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:text="Create Pocket"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_total_pocket"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_total_pocket" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleViewPockets"
+        android:layout_width="match_parent"
+        android:layout_height="290dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_weight="1"
-            android:text="Create Pocket" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_weight="1"
-            android:text="Edit Pocket" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/tv_total_pocket" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/recycleViewPockets">
 
         <TextView
             android:id="@+id/textView7"
@@ -110,8 +128,8 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif-black"
             android:text="Current purchase price / gr"
-            android:textSize="14sp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textView8"
@@ -121,8 +139,8 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif-black"
             android:text="Current selling price / gr"
-            android:textSize="14sp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -141,25 +159,25 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
-            android:text="Rp 1.000.000"
+            android:layout_weight="1"
             android:fontFamily="sans-serif-black"
-            android:textSize="20sp"
+            android:text="Rp 1.000.000"
+            android:textAlignment="center"
             android:textColor="@color/gold"
-            android:textAlignment="center" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
-            android:text="Rp 900.000"
+            android:layout_weight="1"
             android:fontFamily="sans-serif-black"
-            android:textSize="20sp"
+            android:text="Rp 900.000"
+            android:textAlignment="center"
             android:textColor="@color/gold"
-            android:textAlignment="center" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -178,8 +196,8 @@
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
+            android:layout_weight="1"
             android:text="Buy Gold"
             app:icon="@drawable/ic_baseline_add_circle_24" />
 
@@ -187,8 +205,8 @@
             android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
+            android:layout_weight="1"
             android:text="Sell Gold"
             app:icon="@drawable/ic_baseline_remove_circle_24" />
     </LinearLayout>
